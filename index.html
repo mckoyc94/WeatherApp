@@ -6,19 +6,23 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
+    <link rel="stylesheet" href = "style.css"> 
     <title>Weather App</title>
   </head>
   
   <body>
-  
+    
     <main class="container">
+      <!-- City Search and stored here -->
       <aside class="col-lg-3">
         <div class="row">
-          <input class="mt-3 ml-3" placeholder="Enter City Name Here"> <button class="searchBtn"> Search </button>
+          <!-- City Name is input here and searched -->
+          <input class="mt-3 ml-3 cityName" placeholder="Enter City Name Here"> <button class="searchBtn"> Search </button>
         </div>
+        <!-- Searched Cities appear here and can be clicked to veiw Weather -->
         <div class="row city-list"></div>
       </aside>
+      <!-- City Weather Info Shown here -->
       <div class="col-lg-9 weather"></div>
     
   </main>
