@@ -1,3 +1,57 @@
+body {
+    background-color: #FDF9F9;
+}
+
+header {
+    font-size: x-large;
+    text-align: center;
+    color: whitesmoke;
+    padding: 20px;
+    background-image: url("https://i.insider.com/57854a5088e4a70f018b7940?width=1100&format=jpeg&auto=webp");
+    background-position: center;
+    width: 1100px;
+    margin-left: 135px;
+}
+
 .searchBtn {
     background-color: aliceblue;
+}
+
+.current_weather {
+    width: 712px;
+}
+
+.weather {
+    background-color: white;
+}
+
+.hide {
+    display: none;
+}
+
+.new-city {
+    margin-left: 16px;
+    width: 214px;
+    height: 45px;
+    text-align: left;
+}
+
+.uvLow {
+    background-color: lime;
+}
+
+.uvMed {
+    background-color: yellow;
+}
+
+.uvHigh {
+    background-color: tomato;
+}
+
+.uvVHigh {
+    background-color: red;
+}
+
+.uvExtreme {
+    background-color: violet;
 }
