@@ -1,6 +1,8 @@
 // Global Variables
 var savedCities = []; 
 
+renderCityButtons()
+
 // Once Search button is clicked, New Button with City name appears and summons Weather Info
 $('.searchBtn').click(function(){
     //Variables
@@ -46,7 +48,7 @@ function retrieveWeather(city){
         url: presentDay,
         method: 'GET',
     }).then(function(response){
-        // Variables
+        // Main Weather and All Ajax URL Variables
         var cityName = response.name 
         var temperature = Math.round((response.main.temp - 273.15) * 1.8 + 32);
         var humid = response.main.humidity
@@ -74,6 +76,8 @@ function retrieveWeather(city){
 
         }).then(function(response){
             var uvInd = response.current.uvi
+            
+            // Sets Color of UV Index to UVI Scale Color
             $('#uvIndex').html("UV Index: <span>" +uvInd +"</span>")
             if (uvInd < 3) {
                 $('span').addClass('uvLow')
@@ -104,7 +108,7 @@ function retrieveWeather(city){
             } 
 
             for (var i = 1; i < 6; i++){
-                // Variables
+                // Five Day Variables
                 var nextDay;
                 var futureTemp = Math.round((weatherArr[i].main.temp - 273.15) * 1.8 + 32);
                 var futureHumid = weatherArr[i].main.humidity
@@ -131,4 +135,21 @@ function retrieveWeather(city){
             }
         })
     })
+}
+
+// Recreates any previous cities and appends them to document
+function renderCityButtons(){
+    var cityButtons = JSON.parse(localStorage.getItem('Saved Cities'))
+
+    // Goes through Local Storage array and appends buttons to city list
+    for (var i = 0; i < cityButtons.length; i++){
+    var city = cityButtons[i]
+    var newCityBtn = $('<button>')
+    
+    // Appends City Button
+    newCityBtn.text(city)
+    newCityBtn.addClass("new-city")
+    $('.city-list').append(newCityBtn)
+    savedCities.push(city)
+    }
 }
