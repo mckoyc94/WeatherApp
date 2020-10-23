@@ -15,3 +15,4 @@ Once the city data has been retrieved via the AJAX call, the results are shown i
 
 The user may clear the saved cities by clicking the "clear cities" button at the bottom of the page. This will clear both the current buttons and local storage, as well as reload the page. 
 
+If you'd like to view the app yourself, please visit https://mckoyc94.github.io/WeatherApp/
