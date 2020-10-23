@@ -17,6 +17,16 @@ header {
     background-color: aliceblue;
 }
 
+.clear {
+    margin-top: 515px;
+    margin-left: 50px;
+    width: 130px;
+    text-align: center;
+    position: fixed;
+    font-size: 12px;
+    background-color: aliceblue;
+}
+
 .current_weather {
     width: 712px;
 }

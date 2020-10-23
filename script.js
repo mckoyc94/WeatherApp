@@ -1,24 +1,54 @@
 // Global Variables
 var savedCities = []; 
 
+
 renderCityButtons()
 
 // Once Search button is clicked, New Button with City name appears and summons Weather Info
 $('.searchBtn').click(function(){
-    //Variables
     var city = $('input').val().trim()
-    var newCityBtn = $('<button>')
     
-    // Appends City Button
-    newCityBtn.text(city)
-    newCityBtn.addClass("new-city")
-    $('.city-list').append(newCityBtn)
-    $('.cityName').val('')
+    // Adds City Button
+    addCityButton(city)
+
+    // Saves Cities to Local Storage
     savedCities.push(city)
     localStorage.setItem('Saved Cities', JSON.stringify(savedCities))
 
+    // Reveals Clear Button
+    $('.clear').removeClass('hide')
+
     //Calls Weather Info
     retrieveWeather(city)
+})
+
+// If Enter is pressed, runs the same code as search button
+$('input').keypress(function(e){
+    if (e.keyCode == 13 || e.which == 13){
+        var city = $('input').val().trim()
+    
+        // Adds City Button
+        addCityButton(city)
+
+        // Saves Cities to Local Storage
+        savedCities.push(city)
+        localStorage.setItem('Saved Cities', JSON.stringify(savedCities))
+
+        // Reveals Clear Button
+        $('.clear').removeClass('hide')
+
+        //Calls Weather Info
+        retrieveWeather(city)
+    }
+})
+
+// Clears Buttons and Local Storage
+$('.clear').on('click', function(){
+    $('.city-list').empty()
+    savedCities = []
+    localStorage.clear()
+    location.reload()
+    $(this).addClass('hide')
 })
 
 // Can Click on Saved Cities to load local Weather 
@@ -27,9 +57,9 @@ $(document).on('click','.new-city', function(){
     retrieveWeather(oldCity)
 })
 
-function addCityButton(){
+// Function used to Append City Buttons
+function addCityButton(city){
     //Variables
-    var city = $('input').val().trim()
     var newCityBtn = $('<button>')
     
     // Appends City Button
@@ -99,7 +129,6 @@ function retrieveWeather(city){
             method: 'GET',
         }).then(function(response){
             // Array captures the temperature at Midday
-            console.log("response: ", response)
             var weatherArr = ["",]
             for (var i = 0; i < response.list.length; i++){
                 if (response.list[i].dt_txt.indexOf("15:00:00") > 0){
@@ -114,7 +143,6 @@ function retrieveWeather(city){
                 var futureHumid = weatherArr[i].main.humidity
                 var futureIcon = weatherArr[i].weather[0].icon
                 var futureIconURL = "https://openweathermap.org/img/wn/" + futureIcon + "@2x.png"
-                console.log(weatherArr[i])
 
                 // Targets the Sections of the 5 Day Forecast
                 if (moment().format('h:mm:ss a') < moment().format('MMMM Do YYYY 09:00:00')){
@@ -139,17 +167,22 @@ function retrieveWeather(city){
 
 // Recreates any previous cities and appends them to document
 function renderCityButtons(){
-    var cityButtons = JSON.parse(localStorage.getItem('Saved Cities'))
+    if (localStorage.getItem('Saved Cities') !== null) {
+        var cityButtons = JSON.parse(localStorage.getItem('Saved Cities'))
+        
+        // Goes through Local Storage array and appends buttons to city list
+        for (var i = 0; i < cityButtons.length; i++){
+            var city = cityButtons[i]
+            var newCityBtn = $('<button>')
+            
+            // Appends City Button
+            newCityBtn.text(city)
+            newCityBtn.addClass("new-city")
+            $('.city-list').append(newCityBtn)
+            savedCities.push(city)
 
-    // Goes through Local Storage array and appends buttons to city list
-    for (var i = 0; i < cityButtons.length; i++){
-    var city = cityButtons[i]
-    var newCityBtn = $('<button>')
-    
-    // Appends City Button
-    newCityBtn.text(city)
-    newCityBtn.addClass("new-city")
-    $('.city-list').append(newCityBtn)
-    savedCities.push(city)
+            // Reveals Clear Button
+            $('.clear').removeClass('hide')
+        }
     }
 }
