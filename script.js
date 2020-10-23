@@ -1,4 +1,5 @@
 // Global Variables
+var savedCities = []; 
 
 // Once Search button is clicked, New Button with City name appears and summons Weather Info
 $('.searchBtn').click(function(){
@@ -11,9 +12,17 @@ $('.searchBtn').click(function(){
     newCityBtn.addClass("new-city")
     $('.city-list').append(newCityBtn)
     $('.cityName').val('')
+    savedCities.push(city)
+    localStorage.setItem('Saved Cities', JSON.stringify(savedCities))
 
     //Calls Weather Info
     retrieveWeather(city)
+})
+
+// Can Click on Saved Cities to load local Weather 
+$(document).on('click','.new-city', function(){
+    var oldCity = $(this).text()
+    retrieveWeather(oldCity)
 })
 
 function addCityButton(){
@@ -51,7 +60,7 @@ function retrieveWeather(city){
         var iconImg = $('<img>')
         iconImg.attr("src", iconURL)
 
-        $('#city-date').text(cityName + " (" + moment().format("MMMM Do YYYY") + ")")
+        $('#city-date').text(cityName + " (" + moment().format("L") + ")")
         $('#city-date').append(iconImg)
         $('#currentTemp').text("Temperature: " + temperature + " °F")
         $('#currentHumid').text("Humidity: " + humid + "%")
@@ -81,8 +90,45 @@ function retrieveWeather(city){
         })
     
         // Third Ajax Call for 5 Day Forecast
+        $.ajax({
+            url: fiveDayURL,
+            method: 'GET',
+        }).then(function(response){
+            // Array captures the temperature at Midday
+            console.log("response: ", response)
+            var weatherArr = ["",]
+            for (var i = 0; i < response.list.length; i++){
+                if (response.list[i].dt_txt.indexOf("15:00:00") > 0){
+                    weatherArr.push(response.list[i])
+                }
+            } 
+
+            for (var i = 1; i < 6; i++){
+                // Variables
+                var nextDay;
+                var futureTemp = Math.round((weatherArr[i].main.temp - 273.15) * 1.8 + 32);
+                var futureHumid = weatherArr[i].main.humidity
+                var futureIcon = weatherArr[i].weather[0].icon
+                var futureIconURL = "https://openweathermap.org/img/wn/" + futureIcon + "@2x.png"
+                console.log(weatherArr[i])
+
+                // Targets the Sections of the 5 Day Forecast
+                if (moment().format('h:mm:ss a') < moment().format('MMMM Do YYYY 09:00:00')){
+                    nextDay = moment().add(i-1,'day').format('L')
+                } else {
+                    nextDay = moment().add(i,'day').format('L')
+                }
+                var dateCard = $('#day-'+ i)
+                var dateTemp = $('#dTemp-' + i)
+                var dateHumid = $('#dHumid-' + i)
+                var weekIcon = $('#icon-' + i)
+
+                dateCard.text(nextDay)
+                dateTemp.text("Temperature: " + futureTemp + " °F")
+                dateHumid.text("Humidity: " + futureHumid + "%")
+                weekIcon.attr('src', futureIconURL)
+
+            }
+        })
     })
-
-
-
 }

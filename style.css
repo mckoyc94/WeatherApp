@@ -36,6 +36,13 @@ header {
     text-align: left;
 }
 
+.five-day {
+    color: ghostwhite;
+    padding: 0;
+    font-size: 12px;
+    background-color: cornflowerblue;
+}
+
 .uvLow {
     background-color: lime;
 }
@@ -55,3 +62,4 @@ header {
 .uvExtreme {
     background-color: violet;
 }
+
