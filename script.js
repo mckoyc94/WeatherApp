@@ -184,5 +184,8 @@ function renderCityButtons(){
             // Reveals Clear Button
             $('.clear').removeClass('hide')
         }
+
+        //Renders Info for Last City Searched Upon returning to Webpage
+        retrieveWeather(cityButtons[cityButtons.length-1])
     }
 }
